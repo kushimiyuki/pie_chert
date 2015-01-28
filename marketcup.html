@@ -1,0 +1,120 @@
+﻿<!doctype html>
+<html class="no-js" lang="ja">
+    
+    <head>
+    	<meta charset="utf-8">
+    	<!-- If you delete this meta tag World War Z will become reality -->
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>Foundation 5</title>
+
+    	<!-- If you are using the CSS version, only link these 2 files, you may add app.css to use for your overrides if yoi like -->
+    	<link rel="stylesheet" href="css/normalize.css">   	
+    	<link rel="stylesheet" href="css/foundation.css">
+
+  		<!-- If you are using the gem version, you need this only -->
+  		<link rel="stylesheet" type="text/css" href="css/test.css">
+    </head>
+
+    <body>
+
+  	<!-- navigation -->
+	<div class="contain-to-grid sticky">
+		<nav class="top-bar docs-bar hide-for-small"  
+		data-topbar role="navigation" data-options="">
+	  		<ul class="title-area">
+	    		<li class="name">
+	      		<h1><a href="home.html">Home</a></h1>
+	    		</li>
+	<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+	    		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+	  		</ul>
+
+	  	<section class="top-bar-section">
+	<!-- Right Nav Section 
+	    	<ul class="right">
+	      		<li class="active"><a href="#">Right Button Active</a></li>
+	      		<li class="has-dropdown">
+	       		 <a href="#">Right Button Dropdown</a>
+	        <ul class="dropdown">
+	          	<li><a href="#">First link in dropdown</a></li>
+	         	<li class="active"><a href="#">Active link in dropdown</a></li>
+	        </ul>
+	      		</li>
+	   		</ul>
+	-->
+	<!-- Left Nav Section -->
+	    	<ul class="left">
+          		<li><a href="orderbook.html">order Book</a></li>
+          		<li><a href="trend.html">trend</a></li>
+          		<li><a href="marketcup.html">market-cup</a></li>
+	   	 	</ul>
+	  	</section>
+		</nav>
+	</div>
+
+
+    <!-- pie_chart -->  
+	<div class="canvas-area">		
+    <!-- bar_chart -->  
+    	<div class="canvas-holder">
+    		<canvas id="barChart" height="600" width="800"></canvas>
+    	</div>
+
+
+	</div>
+        <script src="js/vendor/modernizr.js"></script>
+        <script src="js/Chart.js"></script>
+        <script src="js/vendor/jquery.js"></script>
+        <script src="js/foundation.min.js"></script>
+        <script>
+            $(document).foundation();
+        </script>
+
+	<script>
+
+	/* chart */
+	$(function () { 
+		setInterval("change()",1000)
+	});
+
+	var state = 0;
+	var	renew = 0;
+	var	draw = function (opt) {
+			
+			/* Bar_chart */
+			$.getJSON("data/bardata" + (state + 1) + ".json" , function(data){
+
+				var ctx = document.getElementById("barChart").getContext("2d");
+				var myBarChart = new Chart(ctx).Bar(data, opt);
+
+			});
+
+		};
+
+
+	function change(){
+
+		if(state === 1){
+			state = 0;
+		}else{
+			state = 1;
+		}
+
+		if(renew === 0){
+			draw({animation: true});
+			renew = 1;
+		}else if(renew === 1){
+			draw({animation: false});
+			renew = 2;
+		}else{
+			draw({animation: false});
+			renew = 1;
+		};
+
+	}
+  		
+    </script>
+   
+    </body>
+
+</html>
